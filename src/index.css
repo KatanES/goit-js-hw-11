@@ -1,0 +1,31 @@
+.header-form {
+  background-color: dodgerblue;
+  height: 100px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.search-form {
+  display: flex;
+  justify-content: center;
+  padding-top: 25px;
+  gap: 10px;
+}
+
+.input {
+  width: 396px;
+  height: 30px;
+  border-radius: 4px;
+  border: 1px solid #ffff;
+  background: #ffff;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.15);
+}
+
+.btn {
+  width: 156px;
+  height: 35px;
+  border-radius: 4px;
+  border: 1px solid #ffff;
+  background: #ffff;
+}
