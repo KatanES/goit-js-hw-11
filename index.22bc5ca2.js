@@ -14,5 +14,5 @@
         <b>Downloads ${r}</b>
       </p>
     </div>
-  </div>`;console.log(ej),ej.insertAdjacentHTML("beforeend",a)}document.querySelector(".js-btn"),eM.addEventListener("submit",function(t){t.preventDefault();let e=eW.value;ey.get(`https://pixabay.com/api/?key=38005308-94b85d06f84497fefd0aa075c&q=${e}&image_type=photo&orientation=horizontal&safesearch=true`).then(t=>t.data).then(t=>(function(t){t.forEach(eF)})(t.hits)).catch(t=>console.log("Error!",t))});
-//# sourceMappingURL=index.e1eb81db.js.map
+  </div>`;console.log(ej),ej.insertAdjacentHTML("beforeend",a)}function eU(){var t;((t=eO)&&t.__esModule?t.default:t).Notify.failure("Sorry, there are no images matching your search query. Please try again.")}document.querySelector(".js-btn"),eM.addEventListener("submit",function(t){t.preventDefault();let e=eW.value;fetch(`https://pixabay.com/api/?key=38005308-94b85d06f84497fefd0aa075c&q=${e}&image_type=photo&orientation=horizontal&safesearch=true`).then(t=>t.json()).then(t=>{0===t.hits.length?eU():function(t){t.forEach(eF)}(t.hits)}).catch(eU)});
+//# sourceMappingURL=index.22bc5ca2.js.map
