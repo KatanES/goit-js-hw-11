@@ -27,13 +27,18 @@ form.addEventListener('submit', item);
 function item(e) {
   e.preventDefault();
   const value = input.value;
-  axios
-    .get(
-      `https://pixabay.com/api/?key=38005308-94b85d06f84497fefd0aa075c&q=${value}&image_type=photo&orientation=horizontal&safesearch=true`
-    )
-    .then(response => response.data)
-    .then(data => mee(data.hits))
-    .catch(error => console.log('Error!', error));
+  fetch(
+    `https://pixabay.com/api/?key=38005308-94b85d06f84497fefd0aa075c&q=${value}&image_type=photo&orientation=horizontal&safesearch=true`
+  )
+    .then(response => response.json())
+    .then(data => {
+      if (data.hits.length === 0) {
+        ShowError();
+      } else {
+        mee(data.hits);
+      }
+    })
+    .catch(ShowError);
 }
 
 function createGall({ tags, webformatURL, likes, views, comments, downloads }) {
@@ -60,6 +65,12 @@ function createGall({ tags, webformatURL, likes, views, comments, downloads }) {
 
 function mee(arr) {
   arr.forEach(createGall);
+}
+
+function ShowError() {
+  Notiflix.Notify.failure(
+    'Sorry, there are no images matching your search query. Please try again.'
+  );
 }
 
 //   У відповіді буде масив зображень, що задовольнили критерії параметрів запиту. Кожне зображення описується об'єктом, з якого тобі цікаві тільки наступні властивості:
