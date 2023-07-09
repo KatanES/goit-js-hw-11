@@ -29,3 +29,24 @@
   border: 1px solid #ffff;
   background: #ffff;
 }
+
+.photo-card {
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.photo-card {
+  background-color: #fff;
+}
+
+.img {
+  width: 300px;
+  height: 260px;
+}

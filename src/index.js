@@ -1,4 +1,4 @@
-const url = 'https://pixabay.com/api/';
+const BASE_URL = 'https://pixabay.com/api/';
 const API_KEY = '38005308-94b85d06f84497fefd0aa075c';
 
 import axios from 'axios';
@@ -6,79 +6,86 @@ import Notiflix from 'notiflix';
 
 axios.defaults.headers.common['x-api-key'] = API_KEY;
 
-// Список параметрів рядка запиту, які тобі обов'язково необхідно вказати:
-
-// key - твій унікальний ключ доступу до API.
-// q - термін для пошуку. Те, що буде вводити користувач.
-// image_type - тип зображення. На потрібні тільки фотографії, тому постав значення photo.
-// orientation - орієнтація фотографії. Постав значення horizontal.
-// safesearch - фільтр за віком. Постав значення true.
-
-// https://pixabay.com/api/?key=38005308-94b85d06f84497fefd0aa075c&q&image_type=photo&orientation=horizontal&safesearch=true
-
-// `{url}?{API_KEY}=38005308-94b85d06f84497fefd0aa075c&q&image_type=photo&orientation=horizontal&safesearch=true`;
-
 const form = document.getElementById('search-form');
 const input = document.querySelector('.js-input');
 const gallery = document.querySelector('.js-gallery');
-const btn = document.querySelector('.js-btn');
-form.addEventListener('submit', item);
+const loadBtn = document.querySelector('.load-js');
 
-function item(e) {
+let page = 1;
+let perPage = 40;
+let totalHits = 0;
+
+form.addEventListener('submit', handleSubmit);
+loadBtn.addEventListener('click', handleLoadMore);
+
+function handleSubmit(e) {
   e.preventDefault();
+  page = 1; // Reset the page to 1 for a new search
   const value = input.value;
-  fetch(
-    `https://pixabay.com/api/?key=38005308-94b85d06f84497fefd0aa075c&q=${value}&image_type=photo&orientation=horizontal&safesearch=true`
-  )
+  fetchImages(value);
+}
+
+function handleLoadMore() {
+  const value = input.value;
+  fetchImages(value);
+}
+
+function fetchImages(value) {
+  const url = `${BASE_URL}?key=${API_KEY}&q=${value}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=${perPage}`;
+
+  fetch(url)
     .then(response => response.json())
     .then(data => {
       if (data.hits.length === 0) {
-        ShowError();
+        showError();
       } else {
-        mee(data.hits);
+        showImages(data.hits);
+        totalHits = data.totalHits;
+        if (page * perPage < totalHits) {
+          loadBtn.hidden = false;
+        } else {
+          loadBtn.hidden = true;
+          showEndMessage();
+        }
       }
+      page++;
     })
-    .catch(ShowError);
+    .catch(showError);
 }
 
-function createGall({ tags, webformatURL, likes, views, comments, downloads }) {
-  const markUp = `<div class="photo-card">
-    <img src="${webformatURL}" alt="${tags}" loading="lazy" />
-    <div class="info">
-      <p class="info-item">
-        <b>Likes ${likes}</b>
-      </p>
-      <p class="info-item">
-        <b>Views ${views}</b>
-      </p>
-      <p class="info-item">
-        <b>Comments ${comments}</b>
-      </p>
-      <p class="info-item">
-        <b>Downloads ${downloads}</b>
-      </p>
-    </div>
-  </div>`;
-  console.log(gallery);
-  gallery.insertAdjacentHTML('beforeend', markUp);
+function showImages(images) {
+  images.forEach(image => {
+    const { tags, webformatURL, likes, views, comments, downloads } = image;
+    const markup = `
+      <div class="photo-card">
+        <img src="${webformatURL}" alt="${tags}" loading="lazy" class="img"/>
+        <div class="info">
+          <p class="info-item">
+            <b>Likes ${likes}</b>
+          </p>
+          <p class="info-item">
+            <b>Views ${views}</b>
+          </p>
+          <p class="info-item">
+            <b>Comments ${comments}</b>
+          </p>
+          <p class="info-item">
+            <b>Downloads ${downloads}</b>
+          </p>
+        </div>
+      </div>`;
+    gallery.insertAdjacentHTML('beforeend', markup);
+  });
 }
 
-function mee(arr) {
-  arr.forEach(createGall);
-}
-
-function ShowError() {
+function showError() {
   Notiflix.Notify.failure(
     'Sorry, there are no images matching your search query. Please try again.'
   );
 }
 
-//   У відповіді буде масив зображень, що задовольнили критерії параметрів запиту. Кожне зображення описується об'єктом, з якого тобі цікаві тільки наступні властивості:
-
-// webformatURL - посилання на маленьке зображення для списку карток.
-// largeImageURL - посилання на велике зображення.
-// tags - рядок з описом зображення. Підійде для атрибуту alt.
-// likes - кількість лайків.
-// views - кількість переглядів.
-// comments - кількість коментарів.
-// downloads - кількість завантажень.
+function showEndMessage() {
+  Notiflix.Notify.info(
+    "We're sorry, but you've reached the end of search results."
+  );
+}
