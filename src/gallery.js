@@ -20,7 +20,7 @@ async function getImages() {
 
     return response;
   } catch (error) {
-    console.error(error);
+    console.log(error);
   }
 }
 export { getImages };
