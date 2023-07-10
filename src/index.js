@@ -31,7 +31,7 @@ async function handleSubmit(e) {
 }
 
 async function handleLoadMore() {
-  const value = input.value;
+  // const value = input.value;
   await fetchImages(value);
 }
 
