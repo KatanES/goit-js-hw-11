@@ -2,7 +2,7 @@ import axios from 'axios';
 import { nameImages, currentPage } from './index';
 
 const BASE_URL = 'https://pixabay.com/api/';
-const API_KEY = '38105470-652721ced6ff5551f65b62ae6';
+const API_KEY = '38119446-41822b71524f1b118d79216dc';
 
 async function getImages() {
   try {

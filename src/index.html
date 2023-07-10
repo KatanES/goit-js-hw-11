@@ -3,25 +3,33 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Homework 11</title>
-    <link rel="stylesheet" href="./css/styles.css" />
+    <title>Page title</title>
+    <link rel="stylesheet" href="./index.css" />
+    <script type="module" src="./index.js"></script>
+    <script type="module" src="./training.js"></script>
   </head>
   <body>
-    <form class="search-form" id="search-form">
-      <input
-        type="text"
-        name="searchQuery"
-        autocomplete="off"
-        placeholder="Search images..."
-      />
-      <button type="submit" class="submit-btn">Search</button>
-    </form>
-    <div class="gallery"></div>
-
-    <div class="load-more">
-      <button hidden type="button" class="load-more-btn">Load more</button>
-      <a hidden class="home" href="#search-form">Home</a>
-    </div>
-    <script src="./index.js" type="module"></script>
+    <header>
+      <div class="header-form">
+        <form class="search-form" id="search-form">
+          <input
+            type="text"
+            name="searchQuery"
+            autocomplete="off"
+            placeholder="Search images..."
+            class="input js-input"
+          />
+          <button class="btn js-btn" type="submit">Search</button>
+        </form>
+      </div>
+    </header>
+    <main>
+      <div class="gallery js-gallery">
+        <!-- Картки зображень -->
+      </div>
+      <button type="button" class="load-btn load-more-btn" hidden>
+        Load more
+      </button>
+    </main>
   </body>
 </html>
