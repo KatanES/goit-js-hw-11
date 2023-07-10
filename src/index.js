@@ -16,6 +16,8 @@ let perPage = 40;
 let totalHits = 0;
 let searchQuery = '';
 
+loadBtn.style.display = 'none'; // Hide the button initially
+
 form.addEventListener('submit', handleSubmit);
 loadBtn.addEventListener('click', handleLoadMore);
 
@@ -23,6 +25,7 @@ async function handleSubmit(e) {
   e.preventDefault();
   page = 1; // Reset the page to 1 for a new search
   gallery.innerHTML = ''; // Clear the existing gallery
+  loadBtn.style.display = 'none'; // Hide the button on new search
   const value = input.value;
   await fetchImages(value);
 }
@@ -45,9 +48,8 @@ async function fetchImages(value) {
       showImages(data.hits);
       totalHits = data.totalHits;
       if (page * perPage < totalHits) {
-        loadBtn.hidden = false;
+        loadBtn.style.display = 'block'; // Show the button if there are more images to load
       } else {
-        loadBtn.hidden = true;
         showEndMessage();
       }
     }
@@ -92,9 +94,5 @@ function showEndMessage() {
   Notiflix.Notify.info(
     "We're sorry, but you've reached the end of search results."
   );
+  loadBtn.style.display = 'none'; // Hide the button when reaching the end of results
 }
-
-// Функція для оновлення пошукового запиту
-// function setSearchQuery(newQuery) {
-//   searchQuery = newQuery;
-// }
