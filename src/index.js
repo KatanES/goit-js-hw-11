@@ -27,37 +27,58 @@ async function handleSubmit(e) {
   gallery.innerHTML = ''; // Clear the existing gallery
   loadBtn.style.display = 'none'; // Hide the button on new search
   const value = input.value;
-  await fetchImages(value);
-}
-
-async function handleLoadMore() {
-  const value = input.value;
-  await fetchImages(value);
-}
-
-async function fetchImages(value) {
-  const url = `${BASE_URL}?key=${API_KEY}&q=${value}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=${perPage}`;
-
   try {
-    const response = await axios.get(url);
-    const data = await response.data;
+    const data = await fetchImages(value);
 
     if (data.hits.length === 0) {
       showError();
     } else {
       showImages(data.hits);
       totalHits = data.totalHits;
+
       if (page * perPage < totalHits) {
         loadBtn.style.display = 'block'; // Show the button if there are more images to load
       } else {
         showEndMessage();
       }
     }
+
     page += 1;
   } catch (error) {
     console.log(error);
     showError();
   }
+}
+
+async function handleLoadMore() {
+  try {
+    const value = input.value;
+    const data = await fetchImages(value);
+
+    if (data.hits.length === 0) {
+      showError();
+    } else {
+      showImages(data.hits);
+      totalHits = data.totalHits;
+
+      if (page * perPage < totalHits) {
+        loadBtn.style.display = 'block'; // Show the button if there are more images to load
+      } else {
+        showEndMessage();
+      }
+    }
+
+    page += 1;
+  } catch (error) {
+    console.log(error);
+    showError();
+  }
+}
+
+async function fetchImages(value) {
+  const url = `${BASE_URL}?key=${API_KEY}&q=${value}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=${perPage}`;
+  const { data } = await axios.get(url);
+  return data;
 }
 
 function showImages(images) {
